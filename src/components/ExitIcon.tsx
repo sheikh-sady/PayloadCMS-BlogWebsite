@@ -1,0 +1,16 @@
+const ExitIcon = ({ color }: { color?: string }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20px"
+      height="20px"
+      viewBox="0 0 20 20"
+      fill={color}
+    >
+      <g>
+        <path d="M13 3v2h2v10h-2v2h4V3h-4zm0 8V9H5.4l4.3-4.3-1.4-1.4L1.6 10l6.7 6.7 1.4-1.4L5.4 11H13z" />
+      </g>
+    </svg>
+  )
+}
+export default ExitIcon
