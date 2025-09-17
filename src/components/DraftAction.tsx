@@ -23,7 +23,7 @@ export default function DraftAction({ post }: { post: PostType }) {
     if (res.ok) {
       alert('Draft post deleted successfully...')
       setDraftPosts((prev: PostType[]) => prev.filter((p: PostType) => p.id !== post.id))
-      router.push('/')
+      window.location.reload()
     } else console.log('Delete response : ', response)
   }
   const handleSubmit = async () => {

@@ -10,20 +10,7 @@ export default function HomePageBody({}: {}) {
   const [searchInput, setSearchInput] = useState<string>('')
   const [filterCategory, setFilterCategory] = useState<CategoryType | any>({ name: 'All' })
 
-  useEffect(() => {
-    let filtered = publishedPosts
-
-    if (filterCategory.name !== 'All') {
-      filtered = filtered.filter((p: PostType) => p.categories?.name === filterCategory.name)
-    }
-
-    if (searchInput.trim() !== '') {
-      filtered = filtered.filter((p: PostType) =>
-        p.title.toLowerCase().includes(searchInput.toLowerCase()),
-      )
-    }
-    setFilteredPosts(filtered)
-  }, [searchInput, filterCategory, publishedPosts])
+  
 
   //console.log('FilteredPosts : ', filteredPosts)
 
@@ -36,7 +23,7 @@ export default function HomePageBody({}: {}) {
         setSearchInput={setSearchInput}
       /> */}
 
-      <PostsGroup filteredPosts={filteredPosts} />
+      <PostsGroup/>
     </div>
   )
 }
