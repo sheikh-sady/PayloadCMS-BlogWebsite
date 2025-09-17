@@ -9,20 +9,9 @@ import PostComments from '@/components/PostComments'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-
-type ParamsShape = { id: string }
-
-export default async function SinglePostPage({
-  params,
-}: {
-  // accept either the plain params object or a Promise of params (matches generated PageProps)
-  params: ParamsShape | Promise<ParamsShape>
-}) {
-  // await whether params is a Promise or a plain object
-  const { id } = (await params) as ParamsShape
-
+export default async function SinglePostPage({ params }: { params: { id: string } }) {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_SERVER_URL}/api/posts/${id}`, // ✅ Use absolute URL
+    `${process.env.NEXT_PUBLIC_SERVER_URL}/api/posts/${params.id}`, // ✅ Use absolute URL
     {
       method: 'GET',
       cache: 'no-store',
@@ -32,6 +21,7 @@ export default async function SinglePostPage({
   if (!res.ok) return notFound()
 
   const post = await res.json()
+  //console.log("Single Post : ", post)
 
   const categoryResponse = await fetch(
     `${process.env.NEXT_PUBLIC_SERVER_URL}/api/categories/${post.categories?.id}`,
@@ -57,7 +47,7 @@ export default async function SinglePostPage({
             />
           ) : (
             <div className="flex gap-2 justify-center items-center w-full h-[280px] bg-gray-200 border-2 border-dashed">
-              <GalleryIcon />
+              <GalleryIcon/>
               <p className="text-gray-400 font-bold text-sm">No image</p>
             </div>
           )}
