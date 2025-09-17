@@ -1,4 +1,3 @@
-'use client'
 import AddComment from '@/components/AddComment'
 import DeleteIcon from '@/components/DeleteIcon'
 import DraftAction from '@/components/DraftAction'
@@ -10,26 +9,35 @@ import PostComments from '@/components/PostComments'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { useRouter } from 'next/router'
-export default async function SinglePostPage() {
-  const router = useRouter()
-  const id = router.query.id
+
+type ParamsShape = { id: string }
+
+export default async function SinglePostPage({
+  params,
+}: {
+  // accept either the plain params object or a Promise of params (matches generated PageProps)
+  params: ParamsShape | Promise<ParamsShape>
+}) {
+  // await whether params is a Promise or a plain object
+  const { id } = (await params) as ParamsShape
+
   const res = await fetch(
-    `$/api/posts/${id}`, // ✅ Use absolute URL
+    `${process.env.NEXT_PUBLIC_SERVER_URL}/api/posts/${id}`, // ✅ Use absolute URL
     {
       method: 'GET',
+      cache: 'no-store',
     },
   )
 
   if (!res.ok) return notFound()
 
   const post = await res.json()
-  //console.log("Single Post : ", post)
 
   const categoryResponse = await fetch(
-    `$/api/categories/${post.categories?.id}`,
+    `${process.env.NEXT_PUBLIC_SERVER_URL}/api/categories/${post.categories?.id}`,
     {
       method: 'GET',
+      cache: 'no-store',
     },
   )
 
@@ -49,7 +57,7 @@ export default async function SinglePostPage() {
             />
           ) : (
             <div className="flex gap-2 justify-center items-center w-full h-[280px] bg-gray-200 border-2 border-dashed">
-              <GalleryIcon/>
+              <GalleryIcon />
               <p className="text-gray-400 font-bold text-sm">No image</p>
             </div>
           )}

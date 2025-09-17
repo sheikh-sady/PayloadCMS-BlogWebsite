@@ -4,6 +4,8 @@
     "baseUrl": ".",
     "esModuleInterop": true,
     "target": "ES2022",
+    "checkJs": false,
+
     "lib": [
       "DOM",
       "DOM.Iterable",
