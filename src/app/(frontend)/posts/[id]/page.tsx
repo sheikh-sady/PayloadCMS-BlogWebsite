@@ -1,3 +1,4 @@
+'use client'
 import AddComment from '@/components/AddComment'
 import DeleteIcon from '@/components/DeleteIcon'
 import DraftAction from '@/components/DraftAction'
@@ -9,12 +10,14 @@ import PostComments from '@/components/PostComments'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-export default async function SinglePostPage({ params }: { params: { id: string } }) {
+import { useRouter } from 'next/router'
+export default async function SinglePostPage() {
+  const router = useRouter()
+  const id = router.query.id
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_SERVER_URL}/api/posts/${params.id}`, // ✅ Use absolute URL
+    `$/api/posts/${id}`, // ✅ Use absolute URL
     {
       method: 'GET',
-      cache: 'no-store',
     },
   )
 
@@ -24,10 +27,9 @@ export default async function SinglePostPage({ params }: { params: { id: string 
   //console.log("Single Post : ", post)
 
   const categoryResponse = await fetch(
-    `${process.env.NEXT_PUBLIC_SERVER_URL}/api/categories/${post.categories?.id}`,
+    `$/api/categories/${post.categories?.id}`,
     {
       method: 'GET',
-      cache: 'no-store',
     },
   )
 

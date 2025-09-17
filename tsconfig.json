@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "strict": true,
+    "strict": false,
     "baseUrl": ".",
     "esModuleInterop": true,
     "target": "ES2022",

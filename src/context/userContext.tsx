@@ -29,7 +29,7 @@ export function getCookie(name: string): string | null {
 }
 
 export default function UserProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<any>(null)
+  const [user, setUser] = useState<UserType|null>(null)
   const [token, setToken] = useState<string | null>(getCookie('frontendToken'))
 
   // Utility to get a cookie by name
