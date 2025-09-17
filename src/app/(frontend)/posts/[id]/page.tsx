@@ -1,39 +1,51 @@
+'use client'
+
+import { useEffect, useState } from 'react'
 import AddComment from '@/components/AddComment'
 import DeleteIcon from '@/components/DeleteIcon'
 import DraftAction from '@/components/DraftAction'
 import EditButton from '@/components/EditButton'
 import GalleryIcon from '@/components/GalleryIcon'
 import PlusIcon from '@/components/PlusIcon'
-import { CategoryType } from '@/components/PostCard'
+import { CategoryType, PostType } from '@/components/PostCard'
 import PostComments from '@/components/PostComments'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import { notFound } from 'next/navigation'
-export default async function SinglePostPage({ params }: { params: { id: string } }) {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_SERVER_URL}/api/posts/${params.id}`, // ✅ Use absolute URL
-    {
-      method: 'GET',
-      cache: 'no-store',
-    },
-  )
 
-  if (!res.ok) return notFound()
+interface Props {
+  params: { id: string }
+}
 
-  const post = await res.json()
-  //console.log("Single Post : ", post)
+export default function SinglePostPage({ params }: Props) {
+  const [post, setPost] = useState<PostType | null>(null)
+  const [category, setCategory] = useState<CategoryType | null>(null)
+  const [loading, setLoading] = useState(true)
 
-  const categoryResponse = await fetch(
-    `${process.env.NEXT_PUBLIC_SERVER_URL}/api/categories/${post.categories?.id}`,
-    {
-      method: 'GET',
-      cache: 'no-store',
-    },
-  )
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch(`/api/posts/${params.id}`)
+        if (!res.ok) throw new Error('Post not found')
+        const postData = await res.json()
+        setPost(postData)
 
-  let category: CategoryType | null
-  if (!categoryResponse.ok) category = null
-  else category = await categoryResponse.json()
+        if (postData.categories?.id) {
+          const categoryRes = await fetch(`/api/categories/${postData.categories.id}`)
+          if (!categoryRes.ok) setCategory(null)
+          else setCategory(await categoryRes.json())
+        }
+      } catch (error) {
+        console.error(error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchData()
+  }, [params.id])
+
+  if (loading) return <p>Loading...</p>
+  if (!post) return <p>Post not found</p>
 
   return (
     <div className="flex flex-col items-center p-2 w-full gap-3">
@@ -47,7 +59,7 @@ export default async function SinglePostPage({ params }: { params: { id: string 
             />
           ) : (
             <div className="flex gap-2 justify-center items-center w-full h-[280px] bg-gray-200 border-2 border-dashed">
-              <GalleryIcon/>
+              <GalleryIcon />
               <p className="text-gray-400 font-bold text-sm">No image</p>
             </div>
           )}
@@ -61,7 +73,6 @@ export default async function SinglePostPage({ params }: { params: { id: string 
               {category ? category.name : 'Unknown'}
             </div>
           </div>
-
           <p className="bg-gray-200 p-2 rounded-2xl text-sm font-semibold text-gray-600 text-center">
             Created at {new Date(post.publishedAt).toLocaleDateString()}
           </p>
