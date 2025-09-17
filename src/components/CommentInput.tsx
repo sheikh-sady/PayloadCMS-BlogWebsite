@@ -1,9 +1,11 @@
+'use client'
 import { ReactHTMLElement } from 'react'
 import CancelIcon from './CancelIcon'
 import SendIcon from './SendIcon'
 import { Input } from './ui/input'
 import { PostType } from './PostCard'
 import { CommentType, useComments } from '@/context/commentContext'
+import { getCookie } from '@/context/userContext'
 
 export default function CommentInput({
   user,
@@ -17,6 +19,7 @@ export default function CommentInput({
   comment?: CommentType
 }) {
   const { setComments } = useComments()
+  const token = getCookie('frontendToken')
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const form = e.currentTarget
@@ -28,6 +31,7 @@ export default function CommentInput({
       method: `${comment ? 'PATCH' : 'POST'}`,
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `JWT ${token}`,
       },
       body: JSON.stringify({
         content,
