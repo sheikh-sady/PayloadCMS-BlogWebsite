@@ -24,6 +24,11 @@ export default buildConfig({
   collections: [AdminUsers, Users, Posts, Categories, Media, Comments],
   secret: process.env.PAYLOAD_SECRET,
   sharp,
+  cors: [
+    'https://payload-cms-blog-website-qrdy.vercel.app',
+    'http://localhost:8100',
+    'http://localhost:8000',
+  ],
   plugins: [
     vercelBlobStorage({
       enabled: true,
