@@ -27,11 +27,20 @@ export default buildConfig({
 
   csrf: ['https://payload-cms-blog-website-qrdy.vercel.app', 'http://localhost:8100'],
 
-  cors: [
-    'https://payload-cms-blog-website-qrdy.vercel.app',
-    'http://localhost:8100',
-    'http://localhost:8000',
-  ],
+  // cors: [
+  //   'https://payload-cms-blog-website-qrdy.vercel.app',
+  //   'http://localhost:8100',
+  //   'http://localhost:8000',
+  // ],
+  cors: {
+    origins: [
+      'https://payload-cms-blog-website-qrdy.vercel.app',
+      'http://localhost:8100',
+      'http://localhost:8000',
+    ],
+    headers: ['Content-Type', 'Authorization'],
+  },
+
   plugins: [
     vercelBlobStorage({
       enabled: true,

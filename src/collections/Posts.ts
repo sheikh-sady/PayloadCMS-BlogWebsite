@@ -1,6 +1,7 @@
 import { CollectionConfig } from 'payload'
 import { deleteAccess } from './accessrules/PostsAccess'
 import { tr } from 'payload/i18n/tr'
+import { lexicalEditor } from '@payloadcms/richtext-lexical'
 
 export const Posts: CollectionConfig = {
   slug: 'posts',
@@ -46,7 +47,8 @@ export const Posts: CollectionConfig = {
     // },
     {
       name: 'content',
-      type: 'text',
+      type: 'richText',
+      editor: lexicalEditor({}),
       required: true,
     },
     {
