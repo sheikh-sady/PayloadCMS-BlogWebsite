@@ -24,6 +24,9 @@ export default buildConfig({
   collections: [AdminUsers, Users, Posts, Categories, Media, Comments],
   secret: process.env.PAYLOAD_SECRET,
   sharp,
+
+  csrf: ['https://payload-cms-blog-website-qrdy.vercel.app', 'http://localhost:8100'],
+
   cors: [
     'https://payload-cms-blog-website-qrdy.vercel.app',
     'http://localhost:8100',
