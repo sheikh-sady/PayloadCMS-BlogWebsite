@@ -25,13 +25,6 @@ export default buildConfig({
   secret: process.env.PAYLOAD_SECRET,
   sharp,
 
-  csrf: ['https://payload-cms-blog-website-qrdy.vercel.app', 'http://localhost:8100'],
-
-  // cors: [
-  //   'https://payload-cms-blog-website-qrdy.vercel.app',
-  //   'http://localhost:8100',
-  //   'http://localhost:8000',
-  // ],
   cors: {
     origins: [
       'https://payload-cms-blog-website-qrdy.vercel.app',
