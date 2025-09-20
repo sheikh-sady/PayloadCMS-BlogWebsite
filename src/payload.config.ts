@@ -16,6 +16,10 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
   admin: {
+    meta: {
+      title: 'Blogger-Admin',
+      description: 'Admin Panel for the Blogger applications content management',
+    },
     importMap: { baseDir: path.resolve(dirname) },
     user: AdminUsers.slug, // admin panel uses AdminUsers only
   },

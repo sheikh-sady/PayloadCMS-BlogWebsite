@@ -3,6 +3,10 @@ import { CollectionConfig } from 'payload'
 export const Comments: CollectionConfig = {
   slug: 'comments',
   admin: {
+     meta: {
+      title: 'Comments',
+      description: 'Collection to manage comments',
+    },
     useAsTitle: 'content',
   },
   access: {

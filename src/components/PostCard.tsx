@@ -10,6 +10,9 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import GalleryIcon from './GalleryIcon'
+import { RichText } from '@payloadcms/richtext-lexical/react'
+import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
+import { extractPlainText } from '@/app/(frontend)/services/converter'
 
 export interface MediaType {
   id: string
@@ -31,7 +34,7 @@ export interface CategoryType {
 export interface PostType {
   id: string
   title: string
-  content: string
+  content: SerializedEditorState
   author: {
     firstName: string
     lastName: string
@@ -49,6 +52,7 @@ export const getImageUrl = (image?: MediaType): string => {
 }
 
 export default function PostCard({ post }: { post: PostType }) {
+  const plainText = extractPlainText(post.content.root)
   return (
     <Link href={`/posts/${post.id}`} passHref>
       <Card className="max-w-88 h-[420px] lg:h-[400px] cursor-pointer hover:shadow-lg transition-all duration-300">
@@ -80,12 +84,11 @@ export default function PostCard({ post }: { post: PostType }) {
         </CardHeader>
 
         <CardContent className="text-sm font-medium text-gray-500">
-          {post.content.length > 150 ? post.content.substring(0, 150) + '...' : post.content}
-        </CardContent>
+          {plainText.length > 150 ? plainText.substring(0, 150) + '...' : plainText}
+          {/* <RichText data={post.content}>
 
-        {/* <CardFooter>
-          <p className="text-blue-500 underline">Read more</p>
-        </CardFooter> */}
+          </RichText> */}
+        </CardContent>
       </Card>
     </Link>
   )

@@ -11,6 +11,7 @@ import { CategoryType, PostType } from '@/components/PostCard'
 import PostComments from '@/components/PostComments'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
+import { RichText } from '@payloadcms/richtext-lexical/react'
 
 interface Props {
   params: { id: string }
@@ -82,7 +83,7 @@ export default function SinglePostPage({ params }: Props) {
         <div className="flex flex-col gap-5">
           <p className="text-xl font-semibold text-gray-600">{post.title}</p>
           <p className="p-2 text-md bg-gray-200 rounded-md font-medium text-gray-600">
-            {post.content}
+            <RichText data = {post.content}/>
           </p>
         </div>
         {post.status === 'published' ? (

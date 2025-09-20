@@ -226,7 +226,21 @@ export interface User {
 export interface Post {
   id: string;
   title: string;
-  content: string;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
   author: string | User;
   status?: ('draft' | 'published') | null;
   featuredImage?: (string | null) | Media;

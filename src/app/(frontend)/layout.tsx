@@ -7,8 +7,8 @@ import CategoryProvider from '@/context/categoryContext'
 import GlobalHeader from '@/components/GlobalHeader'
 
 export const metadata = {
-  description: 'A blank template using Payload in a Next.js app.',
-  title: 'Payload Blank Template',
+  description: 'A Blog application supporting blogger of different platforms',
+  title: 'Blogger',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

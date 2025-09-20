@@ -17,6 +17,7 @@ import {
   isLengthEnough,
 } from '@/app/(frontend)/services/validationService'
 import ErrorMessage from '@/components/ErrorMessage'
+import { extractPlainText } from '@/app/(frontend)/services/converter'
 
 export default function CreateOrEditPostPage({ params }: { params: { id?: string } }) {
   const { id } = params
@@ -57,7 +58,7 @@ export default function CreateOrEditPostPage({ params }: { params: { id?: string
       if (res.ok) {
         const data = await res.json()
         setTitle(data.title)
-        setContent(data.content)
+        setContent(extractPlainText(data.content.root))
         setSelectedCategories(data.categories || null)
         setExistingImage(data.featuredImage || null)
       }
@@ -109,7 +110,21 @@ export default function CreateOrEditPostPage({ params }: { params: { id?: string
 
     const postBody = {
       title,
-      content,
+      content: {
+        root: {
+          type: 'root',
+          children: [
+            {
+              type: 'paragraph',
+              children: [{ type: 'text', text: content }],
+            },
+          ],
+          direction: 'ltr',
+          format: '',
+          indent: 0,
+          version: 1,
+        },
+      },
       categories: selectedCategories,
       status: draftClicked ? 'draft' : 'published',
       publishedAt: new Date().toISOString(),

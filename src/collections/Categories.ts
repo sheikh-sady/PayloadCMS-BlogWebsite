@@ -3,6 +3,10 @@ import { CollectionConfig } from 'payload'
 export const Categories: CollectionConfig = {
   slug: 'categories',
   admin: {
+    meta: {
+      title: 'Categories',
+      description: 'Collection to manage categories',
+    },
     useAsTitle: 'name',
   },
   access: {

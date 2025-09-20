@@ -6,6 +6,10 @@ import { lexicalEditor } from '@payloadcms/richtext-lexical'
 export const Posts: CollectionConfig = {
   slug: 'posts',
   admin: {
+    meta: {
+      title: 'Posts',
+      description: 'Collection to manage Posts',
+    },
     useAsTitle: 'title',
   },
   access: {
@@ -47,7 +51,8 @@ export const Posts: CollectionConfig = {
     // },
     {
       name: 'content',
-      type:"text",
+      type: 'richText',
+      editor: lexicalEditor({}),
       required: true,
     },
     {

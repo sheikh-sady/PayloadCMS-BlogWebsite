@@ -4,6 +4,10 @@ export const Users: CollectionConfig = {
   slug: 'users', // frontend users
   auth: true, // enable login/signup
   admin: {
+    meta: {
+      title: 'Users',
+      description: 'Collection to manage users',
+    },
     useAsTitle: 'email',
   },
   access: {
