@@ -7,6 +7,8 @@ const allowedOrigins = [
   'https://payload-cms-blog-website-qrdy.vercel.app',
 ]
 
+const isLocalhost = origin.startsWith('http://localhost')
+
 // CORS preflight
 export async function OPTIONS(req: NextRequest) {
   const origin = req.headers.get('origin') || ''
@@ -75,8 +77,8 @@ export async function POST(req: NextRequest) {
       name: 'frontendToken',
       value: loginResult.token || '',
       httpOnly: false,
-      sameSite: 'none',
-      secure: true, // required for cross-site cookies
+      sameSite: isLocalhost ? 'lax' : 'none', // use 'lax' for localhost
+      secure: !isLocalhost,
       path: '/',
     })
 
