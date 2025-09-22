@@ -48,37 +48,43 @@ export default function UserProvider({ children }: { children: ReactNode }) {
     setToken(getCookie('frontendToken'))
   }
 
-  useEffect(() => {
-    if (!token) {
-      setUser(null)
-      return
-    }
+useEffect(() => {
+  if (!token) {
+    setUser(null)
+    return
+  }
 
-    const decoded = decodeJwt(token)
-    if (!decoded?.email) {
-      setUser(null)
-      return
-    }
+  const decoded = decodeJwt(token)
+  if (!decoded?.email) {
+    setUser(null)
+    return
+  }
 
-    const fetchUser = async () => {
-      try {
-        const res = await fetch('/api/auth/me/?depth=1', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: decoded.email }),
-        })
+  const fetchUser = async () => {
+    try {
+      const res = await fetch('/api/auth/me/?depth=1', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: decoded.email }),
+      })
 
-        const data = await res.json()
+      const data = await res.json()
+
+      // only update if context user is null (first load) 
+      // or it's a different user (e.g. logged in/out)
+      if (!user || user.email !== data.user.email) {
         if (data.success) setUser(data.user)
         else setUser(null)
-      } catch (err) {
-        console.error('Failed to fetch user:', err)
-        setUser(null)
       }
+    } catch (err) {
+      console.error('Failed to fetch user:', err)
+      setUser(null)
     }
+  }
 
-    fetchUser()
-  }, [token])
+  fetchUser()
+}, [token])
+
 
   return (
     <UserContext.Provider value={{ user, setUser, refreshToken }}>{children}</UserContext.Provider>

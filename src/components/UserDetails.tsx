@@ -87,7 +87,7 @@ export default function UserDetails() {
     })
     const response = await res.json()
     console.log('user update response : ', response)
-    if (res.ok) setUser(response.doc)
+    setUser(response.doc)
 
     setEditable(false)
     setSelectedFile(null)

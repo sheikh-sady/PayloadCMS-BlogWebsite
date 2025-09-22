@@ -1,9 +1,11 @@
+'use client'
 import { UserType, useUser } from '@/context/userContext'
 import MessageIcon from './MessageIcon'
 import ProfileIcon from './ProfileIcon'
 
 const SidebarHeader = () => {
   const { user } = useUser()
+  console.log("Sidebar user : ", user)
   return (
     <>
       {user ? (
