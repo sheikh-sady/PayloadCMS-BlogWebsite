@@ -7,69 +7,95 @@ const allowedOrigins = [
   'https://payload-cms-blog-website-qrdy.vercel.app',
 ]
 
+// CORS preflight
 export async function OPTIONS(req: NextRequest) {
-  const origin = req.headers.get('origin')
-  if (origin && allowedOrigins.includes(origin)) {
+  const origin = req.headers.get('origin') || ''
+  if (allowedOrigins.includes(origin)) {
     return new NextResponse(null, {
       status: 200,
       headers: {
         'Access-Control-Allow-Origin': origin,
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        'Access-Control-Allow-Credentials': 'true',
       },
     })
   }
-
-  return new NextResponse(null, { status: 403 }) // not allowed
+  return new NextResponse(null, { status: 403 })
 }
 
+// Register
 export async function POST(req: NextRequest) {
+  const origin = req.headers.get('origin') || ''
   try {
     const { firstName, lastName, email, password } = await req.json()
 
     if (!firstName || !lastName || !email || !password) {
-      return NextResponse.json(
+      const res = NextResponse.json(
         { success: false, message: 'All fields are required' },
         { status: 400 },
       )
+      if (allowedOrigins.includes(origin)) {
+        res.headers.set('Access-Control-Allow-Origin', origin)
+        res.headers.set('Access-Control-Allow-Credentials', 'true')
+      }
+      return res
     }
 
-    // Check if user already exists
     const existingUser = await payload.find({
-      collection: 'users', // frontend users collection
+      collection: 'users',
       where: { email: { equals: email } },
       limit: 1,
     })
 
     if (existingUser.docs.length > 0) {
-      return NextResponse.json({ success: false, message: 'User already exists' }, { status: 409 })
+      const res = NextResponse.json(
+        { success: false, message: 'User already exists' },
+        { status: 409 },
+      )
+      if (allowedOrigins.includes(origin)) {
+        res.headers.set('Access-Control-Allow-Origin', origin)
+        res.headers.set('Access-Control-Allow-Credentials', 'true')
+      }
+      return res
     }
 
-    // Create new frontend user
     const newUser = await payload.create({
       collection: 'users',
       data: { firstName, lastName, email, password, role: 'subscriber' },
     })
 
-    // Log in the newly created user to get the token
     const loginResult = await payload.login({
       collection: 'users',
       data: { email, password },
     })
 
-    // Set frontend token cookie
     const response = NextResponse.json({ success: true, user: newUser })
     response.cookies.set({
       name: 'frontendToken',
-      value: loginResult.token || '', // token from loginResult
-      httpOnly: false, // set to false if you want JS access
-      sameSite: 'lax',
+      value: loginResult.token || '',
+      httpOnly: false,
+      sameSite: 'none',
+      secure: true, // required for cross-site cookies
       path: '/',
     })
+
+    if (allowedOrigins.includes(origin)) {
+      response.headers.set('Access-Control-Allow-Origin', origin)
+      response.headers.set('Access-Control-Allow-Credentials', 'true')
+    }
 
     return response
   } catch (error) {
     console.error('Registration error:', error)
-    return NextResponse.json({ success: false, message: 'Internal server error' }, { status: 500 })
+    const res = NextResponse.json(
+      { success: false, message: 'Internal server error' },
+      { status: 500 },
+    )
+    if (allowedOrigins.includes(origin)) {
+      res.headers.set('Access-Control-Allow-Origin', origin)
+      res.headers.set('Access-Control-Allow-Credentials', 'true')
+    }
+    return res
   }
 }

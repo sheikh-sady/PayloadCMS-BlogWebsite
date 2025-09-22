@@ -8,7 +8,7 @@ const allowedOrigins = [
   'https://payload-cms-blog-website-qrdy.vercel.app',
 ]
 
-// Handle CORS preflight
+// CORS preflight
 export async function OPTIONS(req: NextRequest) {
   const origin = req.headers.get('origin') || ''
   if (allowedOrigins.includes(origin)) {
@@ -18,13 +18,14 @@ export async function OPTIONS(req: NextRequest) {
         'Access-Control-Allow-Origin': origin,
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        'Access-Control-Allow-Credentials': 'true',
       },
     })
   }
   return new NextResponse(null, { status: 403 })
 }
 
-// Handle login
+// Login
 export async function POST(req: NextRequest) {
   const origin = req.headers.get('origin') || ''
   try {
@@ -32,27 +33,33 @@ export async function POST(req: NextRequest) {
     const payload = await getPayload({ config })
 
     const { token, user } = await payload.login({
-      collection: 'users', // frontend users
+      collection: 'users',
       data: { email, password },
     })
 
-    const res = NextResponse.json({ user })
-
-    // Set frontend token cookie
+    const res = NextResponse.json({ success: true, user })
     res.cookies.set({
       name: 'frontendToken',
       value: token || '',
       httpOnly: false,
-      sameSite: 'lax',
+      sameSite: 'none',
+      secure: true,
       path: '/',
     })
 
-    if (allowedOrigins.includes(origin)) res.headers.set('Access-Control-Allow-Origin', origin)
+    if (allowedOrigins.includes(origin)) {
+      res.headers.set('Access-Control-Allow-Origin', origin)
+      res.headers.set('Access-Control-Allow-Credentials', 'true')
+    }
+
     return res
   } catch (error) {
     console.error('Login error:', error)
     const res = NextResponse.json({ success: false, message: 'Login failed' }, { status: 500 })
-    if (allowedOrigins.includes(origin)) res.headers.set('Access-Control-Allow-Origin', origin)
+    if (allowedOrigins.includes(origin)) {
+      res.headers.set('Access-Control-Allow-Origin', origin)
+      res.headers.set('Access-Control-Allow-Credentials', 'true')
+    }
     return res
   }
 }
