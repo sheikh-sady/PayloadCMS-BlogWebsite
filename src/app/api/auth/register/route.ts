@@ -1,6 +1,28 @@
 import { NextRequest, NextResponse } from 'next/server'
 import payload from 'payload'
 
+const allowedOrigins = [
+  'http://localhost:8100',
+  'http://localhost:8000',
+  'https://payload-cms-blog-website-qrdy.vercel.app',
+]
+
+export async function OPTIONS(req: NextRequest) {
+  const origin = req.headers.get('origin')
+  if (origin && allowedOrigins.includes(origin)) {
+    return new NextResponse(null, {
+      status: 200,
+      headers: {
+        'Access-Control-Allow-Origin': origin,
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      },
+    })
+  }
+
+  return new NextResponse(null, { status: 403 }) // not allowed
+}
+
 export async function POST(req: NextRequest) {
   try {
     const { firstName, lastName, email, password } = await req.json()
