@@ -35,8 +35,28 @@ export default buildConfig({
       'http://localhost:8100',
       'http://localhost:8000',
     ],
-    headers: ['Content-Type', 'Authorization'],
+    headers: ['Content-Type', 'Authorization', 'Accept', 'X-Requested-With'],
   },
+
+  // cors: {
+  //   origins: [
+  //     'https://payload-cms-blog-website-qrdy.vercel.app',
+  //     'http://localhost:8100',
+  //     'http://localhost:8000',
+  //   ],
+  //   headers: ['Content-Type', 'Authorization'],
+  // },
+
+  // cors: [
+  //   'https://payload-cms-blog-website-qrdy.vercel.app',
+  //   'http://localhost:8100',
+  //   'http://localhost:8000',
+  // ],
+  // csrf: [
+  //   'https://payload-cms-blog-website-qrdy.vercel.app',
+  //   'http://localhost:8100',
+  //   'http://localhost:8000',
+  // ],
 
   plugins: [
     vercelBlobStorage({
