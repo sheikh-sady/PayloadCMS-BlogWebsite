@@ -8,6 +8,7 @@ const allowedOrigins = [
 ]
 
 // CORS preflight
+//dwoydwe
 export async function OPTIONS(req: NextRequest) {
   const origin = req.headers.get('origin') || ''
 
