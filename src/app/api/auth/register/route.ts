@@ -7,11 +7,10 @@ const allowedOrigins = [
   'https://payload-cms-blog-website-qrdy.vercel.app',
 ]
 
-const isLocalhost = origin.startsWith('http://localhost')
-
 // CORS preflight
 export async function OPTIONS(req: NextRequest) {
   const origin = req.headers.get('origin') || ''
+
   if (allowedOrigins.includes(origin)) {
     return new NextResponse(null, {
       status: 200,
@@ -29,6 +28,7 @@ export async function OPTIONS(req: NextRequest) {
 // Register
 export async function POST(req: NextRequest) {
   const origin = req.headers.get('origin') || ''
+  const isLocalhost = origin.startsWith('http://localhost')
   try {
     const { firstName, lastName, email, password } = await req.json()
 
