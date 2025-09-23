@@ -4,6 +4,7 @@ const allowedOrigins = [
   'http://localhost:8100',
   'http://localhost:8000',
   'https://payload-cms-blog-website-qrdy.vercel.app',
+  'https://blog-app-12345.netlify.app', // ✅ Netlify origin added
 ]
 
 // CORS preflight

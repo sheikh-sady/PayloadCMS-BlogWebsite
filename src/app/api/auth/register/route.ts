@@ -5,10 +5,10 @@ const allowedOrigins = [
   'http://localhost:8100',
   'http://localhost:8000',
   'https://payload-cms-blog-website-qrdy.vercel.app',
+  'https://blog-app-12345.netlify.app', // ✅ Netlify origin added
 ]
 
 // CORS preflight
-//dwoydwe
 export async function OPTIONS(req: NextRequest) {
   const origin = req.headers.get('origin') || ''
 
@@ -78,7 +78,7 @@ export async function POST(req: NextRequest) {
       name: 'frontendToken',
       value: loginResult.token || '',
       httpOnly: false,
-      sameSite: isLocalhost ? 'lax' : 'none', // use 'lax' for localhost
+      sameSite: isLocalhost ? 'lax' : 'none',
       secure: !isLocalhost,
       path: '/',
     })
