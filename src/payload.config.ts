@@ -30,11 +30,7 @@ export default buildConfig({
   sharp,
 
   cors: {
-    origins: [
-      'https://payload-cms-blog-website-qrdy.vercel.app',
-      'http://localhost:8100',
-      'http://localhost:8000',
-    ],
+    origins: '*',
     headers: ['Content-Type', 'Authorization', 'Accept', 'X-Requested-With'],
   },
 
