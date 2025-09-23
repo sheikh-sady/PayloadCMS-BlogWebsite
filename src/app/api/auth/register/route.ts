@@ -48,6 +48,7 @@ export async function POST(req: NextRequest) {
       collection: 'users',
       where: { email: { equals: email } },
       limit: 1,
+      overrideAccess: true,
     })
 
     if (existingUser.docs.length > 0) {
@@ -65,6 +66,7 @@ export async function POST(req: NextRequest) {
     const newUser = await payload.create({
       collection: 'users',
       data: { firstName, lastName, email, password, role: 'subscriber' },
+      overrideAccess: true,
     })
 
     const response = NextResponse.json({ success: true, user: newUser })
