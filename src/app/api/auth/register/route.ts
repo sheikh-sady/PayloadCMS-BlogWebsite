@@ -29,7 +29,6 @@ export async function OPTIONS(req: NextRequest) {
 // Register
 export async function POST(req: NextRequest) {
   const origin = req.headers.get('origin') || ''
-  const isLocalhost = origin.startsWith('http://localhost')
   try {
     const { firstName, lastName, email, password } = await req.json()
 
@@ -68,20 +67,7 @@ export async function POST(req: NextRequest) {
       data: { firstName, lastName, email, password, role: 'subscriber' },
     })
 
-    const loginResult = await payload.login({
-      collection: 'users',
-      data: { email, password },
-    })
-
     const response = NextResponse.json({ success: true, user: newUser })
-    response.cookies.set({
-      name: 'frontendToken',
-      value: loginResult.token || '',
-      httpOnly: false,
-      sameSite: isLocalhost ? 'lax' : 'none',
-      secure: !isLocalhost,
-      path: '/',
-    })
 
     if (allowedOrigins.includes(origin)) {
       response.headers.set('Access-Control-Allow-Origin', origin)
