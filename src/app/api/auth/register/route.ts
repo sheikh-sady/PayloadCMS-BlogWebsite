@@ -78,7 +78,7 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     console.error('Registration error:', error)
     const res = NextResponse.json(
-      { success: false, message: 'Internal server error' },
+      { success: false, message: error.message || 'Unknown error' },
       { status: 500 },
     )
     if (allowedOrigins.includes(origin)) {
