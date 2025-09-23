@@ -1,3 +1,4 @@
+'use client'
 import { useEffect, useState } from 'react'
 import HomePageAction from './HomePageAction'
 import { CategoryType, PostType } from './PostCard'

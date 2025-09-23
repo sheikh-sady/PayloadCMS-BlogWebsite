@@ -1,14 +1,14 @@
-'use client'
-import { Button } from '@/components/ui/button'
-import AuthPage from './pages/AuthPage'
-import PostCard, { PostType } from '@/components/PostCard'
-import { Suspense, useEffect, useState } from 'react'
-import Link from 'next/link'
-import Sidebar from '@/components/SidebarComponent'
-import LoadingSkeleton from '@/components/LoadingSkeleton'
-import PostsGroup from '@/components/PostsGroup'
-import HomePageAction from '@/components/HomePageAction'
-import { usePosts } from '@/context/postContext'
+// 'use client'
+// import { Button } from '@/components/ui/button'
+// import AuthPage from './pages/AuthPage'
+// import PostCard, { PostType } from '@/components/PostCard'
+// import { Suspense, useEffect, useState } from 'react'
+// import Link from 'next/link'
+// import Sidebar from '@/components/SidebarComponent'
+// import LoadingSkeleton from '@/components/LoadingSkeleton'
+// import PostsGroup from '@/components/PostsGroup'
+// import HomePageAction from '@/components/HomePageAction'
+// import { usePosts } from '@/context/postContext'
 import HomePageBody from '@/components/HomePageBody'
 import BannerSlideshow from '@/components/BannerSlideshow'
 
@@ -27,7 +27,18 @@ import BannerSlideshow from '@/components/BannerSlideshow'
 //   }
 // };
 
-export default function Page() {
+export const getHeroSection = async () => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/globals/heroSection`, {
+    cache: 'no-store', // or 'force-cache' depending on needs
+  })
+
+  if (!res.ok) throw new Error('Failed to fetch hero section')
+
+  return res.json()
+}
+
+export default async function Page() {
+  const hero = await getHeroSection()
   // const {user} = useUser()
 
   // const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -109,7 +120,14 @@ export default function Page() {
           </div>
         </div>
       </div> */}
-      <BannerSlideshow/>
+      {/* <BannerSlideshow/> */}
+      <div className="relative">
+        <img className="z-5" src={hero.heroImage.url} alt="Hero Image" />
+        <div className="flex flex-col gap-2 text-gray-600 font-bold left-[60%] top-[30%] absolute z-10">
+          <p className=" text-3xl">{hero.heroTitle}</p>
+          <p className=" text-xl ">{hero.heroDescription}</p>
+        </div>
+      </div>
 
       <HomePageBody />
     </div>

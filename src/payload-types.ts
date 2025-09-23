@@ -93,8 +93,12 @@ export interface Config {
   db: {
     defaultIDType: string;
   };
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    heroSection: HeroSection;
+  };
+  globalsSelect: {
+    heroSection: HeroSectionSelect<false> | HeroSectionSelect<true>;
+  };
   locale: null;
   user:
     | (AdminUser & {
@@ -496,6 +500,30 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "heroSection".
+ */
+export interface HeroSection {
+  id: string;
+  heroImage?: (string | null) | Media;
+  heroTitle?: string | null;
+  heroDescription?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "heroSection_select".
+ */
+export interface HeroSectionSelect<T extends boolean = true> {
+  heroImage?: T;
+  heroTitle?: T;
+  heroDescription?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

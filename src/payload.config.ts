@@ -10,6 +10,7 @@ import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import sharp from 'sharp'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import { HeroSection } from './globals/HeroSection'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -26,6 +27,7 @@ export default buildConfig({
   db: mongooseAdapter({ url: process.env.DATABASE_URI || '' }),
 
   collections: [AdminUsers, Users, Posts, Categories, Media, Comments],
+  globals: [HeroSection],
   secret: process.env.PAYLOAD_SECRET,
   sharp,
 
@@ -34,6 +36,7 @@ export default buildConfig({
       'https://payload-cms-blog-website-qrdy.vercel.app',
       'http://localhost:8100',
       'http://localhost:8000',
+      
     ],
     headers: ['Content-Type', 'Authorization', 'Accept', 'X-Requested-With'],
   },
