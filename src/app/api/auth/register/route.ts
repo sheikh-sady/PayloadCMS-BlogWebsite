@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import payload from 'payload'
+import { getPayload } from 'payload'
+import config from '@/payload.config'
 
 const allowedOrigins = [
   'http://localhost:8100',
@@ -29,6 +30,7 @@ export async function OPTIONS(req: NextRequest) {
 // Register
 export async function POST(req: NextRequest) {
   const origin = req.headers.get('origin') || ''
+
   try {
     const { firstName, lastName, email, password } = await req.json()
 
@@ -44,11 +46,15 @@ export async function POST(req: NextRequest) {
       return res
     }
 
+    // Initialize Payload instance
+    const payload = await getPayload({ config })
+
+    // Check if user exists
     const existingUser = await payload.find({
       collection: 'users',
       where: { email: { equals: email } },
       limit: 1,
-      overrideAccess: true,
+      overrideAccess: true, // allow access without auth
     })
 
     if (existingUser.docs.length > 0) {
@@ -63,10 +69,11 @@ export async function POST(req: NextRequest) {
       return res
     }
 
+    // Create new user
     const newUser = await payload.create({
       collection: 'users',
       data: { firstName, lastName, email, password, role: 'subscriber' },
-      overrideAccess: true,
+      overrideAccess: true, // allow access without auth
     })
 
     const response = NextResponse.json({ success: true, user: newUser })
@@ -77,7 +84,7 @@ export async function POST(req: NextRequest) {
     }
 
     return response
-  } catch (error) {
+  } catch (error: any) {
     console.error('Registration error:', error)
     const res = NextResponse.json(
       { success: false, message: error.message || 'Unknown error' },
