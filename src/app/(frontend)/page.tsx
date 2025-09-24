@@ -39,10 +39,6 @@ export const getHeroSection = async () => {
 
 export default async function Page() {
   const hero = await getHeroSection()
-  // const {user} = useUser()
-
-  // const [isAuthenticated, setIsAuthenticated] = useState(false);
-  // const [userData, setUserData] = useState<any>(null);
 
   // useEffect(() => {
   //   const token = getCookie("frontendToken");
@@ -122,10 +118,10 @@ export default async function Page() {
       </div> */}
       {/* <BannerSlideshow/> */}
       <div className="relative">
-        <img className="z-5" src={hero.heroImage.url} alt="Hero Image" />
+        <img className="z-5" src={hero.heroBlock[0].Image.url} alt="Hero Image" />
         <div className="flex flex-col gap-2 text-gray-600 font-bold left-[60%] top-[30%] absolute z-10">
-          <p className=" text-3xl">{hero.heroTitle}</p>
-          <p className=" text-xl ">{hero.heroDescription}</p>
+          <p className=" text-3xl">{hero.heroBlock[0].title}</p>
+          <p className=" text-xl ">{hero.heroBlock[0].subTitle}</p>
         </div>
       </div>
 

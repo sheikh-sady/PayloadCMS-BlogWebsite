@@ -507,9 +507,16 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  */
 export interface HeroSection {
   id: string;
-  heroImage?: (string | null) | Media;
-  heroTitle?: string | null;
-  heroDescription?: string | null;
+  heroBlock?:
+    | {
+        title: string;
+        subTitle: string;
+        Image?: (string | null) | Media;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'block';
+      }[]
+    | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -518,9 +525,19 @@ export interface HeroSection {
  * via the `definition` "heroSection_select".
  */
 export interface HeroSectionSelect<T extends boolean = true> {
-  heroImage?: T;
-  heroTitle?: T;
-  heroDescription?: T;
+  heroBlock?:
+    | T
+    | {
+        block?:
+          | T
+          | {
+              title?: T;
+              subTitle?: T;
+              Image?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

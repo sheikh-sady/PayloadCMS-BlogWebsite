@@ -22,7 +22,7 @@ export const SingleComment = ({ comment, post }: { comment: CommentType; post: P
         <div className="flex justify-between items-center">
           <p className="text-md text-gray-600">{comment.content}</p>
           <div className="hover:cursor-pointer" onClick={() => setIsOpen(true)}>
-            {user?.id === comment.author.id && <EditIcon color="gray"/>}
+            {user?.id === comment.author.id && <EditIcon color="gray" />}
           </div>
         </div>
       ) : (

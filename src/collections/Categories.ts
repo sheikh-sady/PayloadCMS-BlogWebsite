@@ -1,3 +1,5 @@
+import { ExtendedBlock } from '@/blocks/ExtendedBlock'
+import { HeroBlock } from '@/blocks/HeroBlock'
 import { CollectionConfig } from 'payload'
 
 export const Categories: CollectionConfig = {
@@ -51,5 +53,10 @@ export const Categories: CollectionConfig = {
       name: 'description',
       type: 'textarea',
     },
+    // {
+    //   name: 'categoryBlock',
+    //   type: 'blocks',
+    //   blocks: [ExtendedBlock],
+    // },
   ],
 }
