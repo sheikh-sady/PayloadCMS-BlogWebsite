@@ -81,10 +81,10 @@ export default function SinglePostPage({ params }: Props) {
       </div>
       <div className="w-[90%] sm:w-[80%] flex flex-col gap-3">
         <div className="flex flex-col gap-5">
-          <p className="text-xl font-semibold text-gray-600">{post.title}</p>
-          <p className="p-2 text-md bg-gray-200 rounded-md font-medium text-gray-600">
-            <RichText data = {post.content}/>
-          </p>
+          <div className="text-xl font-semibold text-gray-600">{post.title}</div>
+          <div className="w-full p-2 text-md bg-gray-200 rounded-md font-medium text-gray-600 prose max-w-[100%]">
+            <RichText data={post.content} />
+          </div>
         </div>
         {post.status === 'published' ? (
           <>

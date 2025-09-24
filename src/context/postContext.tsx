@@ -15,7 +15,7 @@ export default function PostProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const fetchPosts = async () => {
       setLoading(true)
-      const res = await fetch('/api/posts', {
+      const res = await fetch('/api/posts?limit=15', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
