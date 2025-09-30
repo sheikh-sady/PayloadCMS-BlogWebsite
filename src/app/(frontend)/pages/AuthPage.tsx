@@ -102,10 +102,9 @@ const AuthPage = () => {
   }
 
   return (
-    <div className="font-sans flex  justify-center">
-      <div className="bg-white p-5 my-2 flex flex-col gap-6 items-center w-110 shadow-xl rounded-xl">
-        <div className="p-2 flex flex-col gap-4 items-center">
-          <div className="flex bg-gradient-to-r from-violet-600 to-cyan-600 justify-center items-center rounded-xl font-medium w-15 h-15 "></div>
+    <div className="h-screen font-sans flex justify-center items-center">
+      <div className=" bg-white p-5 my-2 flex flex-col gap-3 shadow-xl rounded-xl ">
+        <div className={`${signUpActive ? 'mt-12' : ''} p-2 flex flex-col gap-4 items-center`}>
           <p className="text-3xl text-gray-800 font-bold">Blogger</p>
           <p className=" text-gray-600">Write professional blogs,one at a time</p>
         </div>
