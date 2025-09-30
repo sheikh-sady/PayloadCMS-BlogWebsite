@@ -14,13 +14,11 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" data-theme="light">
-      {' '}
-      {/* default theme */}
       <body>
         <PostProvider>
           <CategoryProvider>
             <UserProvider>
-              <div className="sm: flex-col lg:flex-row lg:justify-between gap-1">
+              <div className="sm:flex-col lg:flex-row lg:justify-between gap-1">
                 <div>
                   <Sidebar />
                 </div>
